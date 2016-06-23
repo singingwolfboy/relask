@@ -73,7 +73,7 @@ class Relask(object):
         schema = self.schema.execute(query.decode('utf-8'))
         env = os.environ.copy()
         env['RELASK_SCHEMA'] = json.dumps(schema.data)
-        subprocess.check_call(['webpack'], env=env,
+        subprocess.check_call(['node_modules/webpack/bin/webpack.js'], env=env,
                               cwd=flask.current_app.root_path)
         self._webpack = subprocess.Popen(['webpack', '--watch'], env=env,
                                          cwd=flask.current_app.root_path)

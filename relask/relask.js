@@ -9,7 +9,7 @@ export default class Relask extends React.Component {
         return (
             <Router
                 history={browserHistory}
-                routes={this.props.routes}
+                routes={this.props.children}
                 render={applyRouterMiddleware(useRelay)}
                 environment={Relay.Store}
             />
