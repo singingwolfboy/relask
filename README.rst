@@ -32,15 +32,21 @@ Usage
 
 1. Install Relask:
 
+.. code:: bash
+
   pip install git+https://github.com/decentfox/relask
 
 2. Create a Flask application, for example: http://flask.pocoo.org/docs/quickstart/
 
 3. Initialize your Flask application with Relask (this requires `npm`):
 
+.. code:: bash
+
   FLASK_APP=xxx flask init-relask
 
 4. Under the root path of your Flask application, create `scripts/app.js` with something like this:
+
+.. code:: javascript
 
   import React from "react";
   import ReactDOM from "react-dom";
@@ -74,6 +80,8 @@ Usage
 
 5. Initialize the Relask extension with something like this:
 
+.. code:: python
+
   import graphene
   from flask import Flask
   from graphene import relay
@@ -104,6 +112,8 @@ Usage
   relask.schema.query = Query
 
 6. Run to see your result!
+
+.. code:: bash
 
   FLASK_APP=xxx flask run
 
