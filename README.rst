@@ -17,7 +17,7 @@ Relask
         :alt: Dependencies
 
 
-A Relay-based web development kit on Flask
+A Relay-based web development kit on Flask.
 
 * Free software: BSD license
 * Documentation: https://relask.readthedocs.io.
@@ -25,7 +25,10 @@ A Relay-based web development kit on Flask
 Features
 --------
 
-* Fast development setup with Relay
+* Fast web development setup with ES6, React and Relay
+* Batteries included: React Router, Webpack and Babel
+* Server is powered by Python, Flask and Graphene
+* JWT integrated, with a working example using Flask-Login
 
 Usage
 -----
@@ -52,23 +55,23 @@ Usage
   import ReactDOM from "react-dom";
   import {Route, IndexRoute} from "react-router";
   import Relay from "react-relay";
-  import Relask from "babel-loader!relask";
+  import {Relask, RelayContainer} from "babel-loader!relask";
 
 
+  @RelayContainer
   class Hello extends React.Component {
       render() {
           return (
               <div>Hello, {this.props.hello.name}!</div>
           );
       }
+
+      static relay = {
+          fragments: {
+              hello: () => Relay.QL`fragment on Hello { name }`
+          }
+      };
   }
-
-  Hello = Relay.createContainer(Hello, {
-      fragments: {
-          hello: () => Relay.QL`fragment on Hello { name }`
-      }
-  });
-
 
   ReactDOM.render((
       <Relask>
@@ -111,7 +114,7 @@ Usage
   relask = Relask(app)
   relask.schema.query = Query
 
-6. Run to see your result!
+6. See your result with one command - don't worry about webpack any more:
 
 .. code:: bash
 
