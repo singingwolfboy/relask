@@ -11,6 +11,9 @@
     <div id="app"></div>
 {% endblock %}
 {% block scripts %}
+    <script>
+        var relask_config = {{ relask_config|tojson|safe }};
+    </script>
     <script src="{{ url_for('static', filename='app.bundle.js') }}"></script>
 {% endblock %}
 </body>

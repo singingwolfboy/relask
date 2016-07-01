@@ -36,7 +36,9 @@ def init(info):
     "react"
   ],
   "plugins": [
-    "relask/babelRelayPlugin"
+    "relask/babelRelayPlugin",
+    "transform-decorators-legacy",
+    "transform-class-properties"
   ]
 }
 ''')

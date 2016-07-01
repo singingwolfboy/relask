@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
+import atexit
 import json
 import os
 import subprocess
-import atexit
 
 import flask
 import graphene
@@ -19,6 +19,7 @@ class Relask(object):
         self._blueprint_options = blueprint_options
         self._blueprint = self._create_blueprint()
         self._add_url_rules()
+        self.jwt = None
         if app is not None:
             self.init_app(app)
 
@@ -40,10 +41,21 @@ class Relask(object):
         """
         app.register_blueprint(self.blueprint, **self.blueprint_options)
         flask.request_started.connect(self._run_webpack, app)
+        if app.config.get('JWT_ENABLED', True):
+            from .jwt import JWTSessionInterface
+            self.jwt = JWTSessionInterface(app)
 
     # noinspection PyMethodMayBeStatic
     def index_view(self, path='/'):
-        return flask.render_template('relask/index.html')
+        conf = {}
+        if self.jwt:
+            conf.update(
+                jwt_header_name=self.jwt.header_name,
+                jwt_schema=self.jwt.schema,
+                jwt_header_set_bearer=self.jwt.header_set_bearer,
+            )
+        conf['jwt_enabled'] = bool(self.jwt)
+        return flask.render_template('relask/index.html', relask_config=conf)
 
     # noinspection PyMethodMayBeStatic
     def _create_blueprint(self):
@@ -54,8 +66,8 @@ class Relask(object):
         self.blueprint.add_url_rule('/', view_func=self.index_view)
         self.blueprint.add_url_rule('/<path:path>', view_func=self.index_view)
         self.blueprint.add_url_rule(
-            '/graphql',
-            view_func=GraphQLView.as_view('graphql', schema=self.schema))
+            '/graphql', view_func=GraphQLView.as_view(
+                'graphql', schema=self.schema))
 
     # noinspection PyUnusedLocal
     def _run_webpack(self, sender, **extra):

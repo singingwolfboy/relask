@@ -14,7 +14,7 @@ requirements = [
     'Flask>=0.11',
     'Flask-GraphQL>=1.3.0',
     'Flask-Webpack==0.1.0',
-    'graphene>=0.10',
+    'graphene[sqlalchemy]>=0.10',
 ]
 
 test_requirements = [
